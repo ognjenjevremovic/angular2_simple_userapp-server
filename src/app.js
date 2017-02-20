@@ -4,14 +4,17 @@ const express = require('express');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+
+//  Register the environment variables
+dotenv.config();
 
 
 //  App
 const app = express();
 
-//  Register the environment variables
-dotenv.config();
+//  routes
+const indexRoute = require(path.join(__dirname, 'routes/index'));
+const usersRoute = require(path.join(__dirname, 'routes/users'));
 
 
 //  Middlewares
@@ -20,10 +23,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 
-//  Connect to the database instance
-const db_connection = `http://localhost:${process.env.DB_PORT}/${process.env.DB_NAME}`;
-mongoose.connect(db_connection);
-
+//  Application routes
+app.use('/', indexRoute);
+app.use('/api/', usersRoute);
 
 
 //  Open the socket
