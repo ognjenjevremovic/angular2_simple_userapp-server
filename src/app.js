@@ -4,6 +4,7 @@ const express = require('express');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 //  Register the environment variables
 dotenv.config();
@@ -19,6 +20,7 @@ const usersRoute = require(path.join(__dirname, 'routes/users'));
 
 //  Middlewares
 app.use(morgan('dev'));
+app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
