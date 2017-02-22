@@ -10,7 +10,7 @@ module.exports.UserModel = class {
     }
 
     date(date) {
-        return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+        return `${date.getDate()}.${(date.getMonth() + 1) <= 9 ? ('0' + (date.getMonth() + 1)) : date.getMonth()}.${date.getFullYear()}`;
     }
 };
 

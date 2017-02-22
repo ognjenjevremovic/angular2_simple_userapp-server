@@ -2,7 +2,7 @@
   "name": "angular2_simple_userapp_server",
   "version": "0.0.1",
   "description": "A server code for serving data to the Angular 2 simple User app",
-  "main": "src/app.js",
+  "main": "src/server.js",
   "scripts": {
     "start": "nodemon"
   },

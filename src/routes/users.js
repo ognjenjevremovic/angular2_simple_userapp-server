@@ -47,10 +47,7 @@ router.delete('/user/:id', function(req, res) {
 
 //  Add single user
 router.post('/user', function(req, res) {
-    let user = new UserModel(req.body);
-    console.log(user);
-
-    db.users.save(new UserModel(req.body), function(err, user) {
+    db.users.save(new UserModel(Object.assign({}, req.body, { newUser: true })), function(err, user) {
         console.log(err);
         if(err) return res.status(500).json(new ErrorResponseModel(err));
         return res.status(200).json(new UserResponse(user));
