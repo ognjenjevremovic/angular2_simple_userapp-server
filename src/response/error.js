@@ -1,4 +1,4 @@
-module.exports.ErrorResponse = class {
+module.exports = class {
     constructor(errorObject) {
         this.success = false;
         this.error = errorObject;

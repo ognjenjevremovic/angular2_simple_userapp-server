@@ -1,32 +1,42 @@
-module.exports.UserModel = class {
-    constructor({ name, email, location, avatar, bio, newUser }) {
-        name ? this.name = name : null;
-        email ? this.email = email : null;
-        location ? this.location = location : null;
-        avatar ? this.avatar = avatar : null;
-        bio ? this.bio = bio : null;
-        newUser ? this.date_joined = this.date(new Date()) : null;
-        !newUser ? this.date_updated = this.date(new Date()) : null;
-    }
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
-    date(date) {
-        return `${date.getDate()}.${(date.getMonth() + 1) <= 9 ? ('0' + (date.getMonth() + 1)) : date.getMonth()}.${date.getFullYear()}`;
+let userNameSchema = new Schema({
+    first: {
+        required: true,
+        type: String
+    },
+    last: {
+        required: true,
+        type: String
     }
-};
+}, {_id: false});
+let locationSchema = new Schema({
+    state: String,
+    city: String,
+    ZIP: Number
+}, {_id: false});
 
-module.exports.UserResponse = class {
-    constructor(userObject) {
-        this.success = true;
-        this.error = null;
-        userObject ? this.user = userObject : null;
-    }
-};
-
-module.exports.UserListResponse = class {
-    constructor(usersList) {
-        this.success = true;
-        this.error = null;
-        this.length = usersList.length;
-        this.users = usersList;
-    }
-};
+let userSchema = new Schema({
+    name: userNameSchema,
+    email: {
+        type: String,
+        unique: true
+    },
+    location: locationSchema,
+    date_joined: String,
+    date_updated: String,
+    bio: String,
+    avatar: String
+});
+userSchema.pre('save', (next) => {
+    console.log('saving!');
+    this._id = mongoose.Types.ObjectId();
+    next();
+});
+userSchema.pre('save', (next) => {
+    let date = new Date();
+    this.date_joined = `${date.getDate()}.${((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1}.${date.getFullYear()}`;
+    next();
+});
+mongoose.model('User', userSchema, 'users');
